@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { Link, Route, Redirect } from 'react-router-dom';
+import { Link, Route, Redirect, useHistory } from 'react-router-dom';
 import Pizza from './components/Pizza';
 import Confirmation from './components/Confirmation';
 import './App.css';
 import formSchema from './validation/formSchema';
 import * as yup from 'yup';
-import axios from 'axios';
 
 const initialFormValues = {
   name: '',
@@ -21,13 +20,12 @@ const initialErrorValues = {
   name: '',
 }
 
-const initialOrder = {}
-
 const App = () => {
-  const [ order, setOrder ] = useState(initialOrder);
+  const [ order, setOrder ] = useState({});
   const [ formValues, setFormValues ] = useState(initialFormValues);
   const [ disabled, setDisabled ] = useState(true);
   const [ errors, setErrors ] = useState(initialErrorValues);
+  const history = useHistory();
 
   useEffect(() => {
     formSchema.isValid(formValues)
@@ -71,24 +69,25 @@ const App = () => {
       olives: formValues.olives,
       specialInstructions: formValues.specialInstructions.trim()
     }
-    debugger
-    submitOrder(submittedOrder)
-    window.location.href = '/confirmation'
+    setOrder(submittedOrder)
+    console.log(order)
+    history.push('/confirmation');
   }
 
-  const submitOrder = (submittedOrder) => {
-    axios.post('https://reqres.in/api/users', submittedOrder)
-      .then(res => {
-        console.log(res)
-        setOrder({...submittedOrder})
-      })
-      .catch(err => {
-        debugger
-      })
-      .finally(() => {
-        setFormValues(initialFormValues)
-      })
-  }
+  // const submitOrder = (submittedOrder) => {
+  //   axios.post('https://reqres.in/api/users', submittedOrder)
+  //     .then(res => {
+  //       console.log(res)
+  //       debugger
+  //       setOrder({res})
+  //     })
+  //     .catch(err => {
+  //       debugger
+  //     })
+  //     .finally(() => {
+  //       setFormValues(initialFormValues)
+  //     })
+  // }
 
   return (
     <>

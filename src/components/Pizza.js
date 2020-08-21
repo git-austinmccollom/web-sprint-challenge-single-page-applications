@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components'
+import { Link, Route, Redirect } from 'react-router-dom';
 
 const FormBox = styled.form`
     width: 50%;
@@ -93,7 +94,9 @@ export default function Pizza(props) {
                     onChange={onInputChange}
                     />
                 </label>
+                {/* <Link to='/confirmation'> */}
                 <button disabled={disabled}>Submit Order</button>
+                {/* </Link> */}
                 
             </div>
         </FormBox>
