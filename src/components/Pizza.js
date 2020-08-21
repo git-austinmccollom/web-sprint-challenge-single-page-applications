@@ -78,11 +78,11 @@ export default function Pizza(props) {
                     </label>
                 </div>
                 <h3>Pick your toppings</h3>
-                    <input type='checkbox' name='peppers' checked={formValues.peppers} onChange={onChecked}/>
+                    <input type='checkbox' name='peppers' value={formValues.peppers} onChange={onChecked}/>
                     <label htmlFor="peppers">Peppers</label>
                     <input type='checkbox' name='onions' value={formValues.onions} onChange={onChecked}/>
                     <label htmlFor="onions">Onions</label>
-                    <input type='checkbox' name='jalapeños' value={formValues.jalapeños}onChange={onChecked}/>
+                    <input type='checkbox' name='jalapeños' value={formValues.jalapeños} onChange={onChecked}/>
                     <label htmlFor="jalapeños">Jalapeños</label>
                     <input type='checkbox' name='olives' value={formValues.olives} onChange={onChecked}/>
                     <label htmlFor="olives">Olives</label>
