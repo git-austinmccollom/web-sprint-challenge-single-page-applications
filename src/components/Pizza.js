@@ -32,7 +32,7 @@ const FormBox = styled.form`
 `
 
 export default function Pizza(props) {
-    const { disabled, changeFormValues, formValues, errors} = props
+    const { disabled, changeFormValues, toggleCheckbox, formValues, submitForm, errors} = props
 
     const onInputChange = evt => {
         const value = evt.target.value
@@ -40,8 +40,18 @@ export default function Pizza(props) {
         changeFormValues(name, value)
     }
 
+    const onChecked = evt => {
+        const { name, checked } = evt.target
+        toggleCheckbox(name, checked)
+    }
+
+    const onSubmit = evt => {
+        evt.preventDefault()
+        submitForm()
+    }
+
     return (
-        <FormBox>
+        <FormBox onSubmit={onSubmit}>
             <div className='innerForm'>
                 <h1>Order Pizza!</h1>
                 <div className='inlineDiv'>
@@ -58,7 +68,7 @@ export default function Pizza(props) {
                 </div>
                 <div className='inlineDiv'>
                     <label>Size:
-                        <select name='size' value={formValues.size}>
+                        <select name='size' onChange={onInputChange} value={formValues.size}>
                             <option value=''>- Select an option -</option>
                             <option value='small'>Small</option>
                             <option value='medium'>Medium</option>
@@ -67,13 +77,13 @@ export default function Pizza(props) {
                     </label>
                 </div>
                 <h3>Pick your toppings</h3>
-                    <input type='checkbox' name='peppers' checked={formValues.peppers}/>
+                    <input type='checkbox' name='peppers' checked={formValues.peppers} onChange={onChecked}/>
                     <label htmlFor="peppers">Peppers</label>
-                    <input type='checkbox' name='onions' value={formValues.onions}/>
+                    <input type='checkbox' name='onions' value={formValues.onions} onChange={onChecked}/>
                     <label htmlFor="onions">Onions</label>
-                    <input type='checkbox' name='jalapeños' value={formValues.jalapeños}/>
+                    <input type='checkbox' name='jalapeños' value={formValues.jalapeños}onChange={onChecked}/>
                     <label htmlFor="jalapeños">Jalapeños</label>
-                    <input type='checkbox' name='olives' value={formValues.olives}/>
+                    <input type='checkbox' name='olives' value={formValues.olives} onChange={onChecked}/>
                     <label htmlFor="olives">Olives</label>
                 <label>Special Instructions:
                     <input
@@ -83,7 +93,7 @@ export default function Pizza(props) {
                     onChange={onInputChange}
                     />
                 </label>
-                <button disabled={disabled}>Add to Order</button>
+                <button disabled={disabled}>Submit Order</button>
                 
             </div>
         </FormBox>

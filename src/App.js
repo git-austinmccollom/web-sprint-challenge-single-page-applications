@@ -20,9 +20,10 @@ const initialErrorValues = {
   name: '',
 }
 
-const order = null
+const initialOrder = 'click pizza to order'
 
 const App = () => {
+  const [ order, setOrder ] = useState(initialOrder);
   const [ formValues, setFormValues ] = useState(initialFormValues);
   const [ disabled, setDisabled ] = useState(true);
   const [ errors, setErrors ] = useState(initialErrorValues);
@@ -53,26 +54,32 @@ const App = () => {
     setFormValues({ ...formValues, [name]: value })
   }
 
+  const toggleCheckbox = (name, checked) => {
+    setFormValues({
+      ...formValues, [name]: checked
+    })
+  }
+
   const submitForm = evt => {
-    const order = {
+    const submittedOrder = {
       name: formValues.name.trim(),
       size: formValues.size,
       peppers: formValues.peppers,
       onions: formValues.onions,
       jalapeños: formValues.jalapeños,
       olives: formValues.olives,
-      specialInstructions: formValues.password.trim()
+      specialInstructions: formValues.specialInstructions.trim()
     }
-    submitOrder(order)
-  }
-
-  const submitOrder = (order) => {
+    debugger
+    setOrder({submittedOrder})
+    console.log(order)
     window.location.href = '/confirmation'
   }
+
   return (
     <>
       <div className='App-header'>
-      <h1>Lambda Eats</h1>
+        <h1>Lambda Eats</h1>
         <Link className='App-link' to='/'>Home</Link>
         <br></br>
         <Link className='App-link' to='/pizza'>Pizza</Link>
@@ -80,14 +87,12 @@ const App = () => {
           <Redirect to='/' />
         </Route>
       </div>
-        <Route exact path='/pizza'>
-          <Pizza disabled={disabled} changeFormValues={changeFormValues} formValues={formValues} errors={errors}/>
-        </Route>
-        {order != null ?
-        <Route exact path='/confirmation'>
-          <Confirmation order={order} />
-        </Route>
-        : null}
+      <Route exact path='/pizza'>
+        <Pizza disabled={disabled} changeFormValues={changeFormValues} toggleCheckbox={toggleCheckbox} formValues={formValues} submitForm={submitForm} errors={errors}/>
+      </Route>
+      <Route exact path='/confirmation'>
+        <Confirmation order={order} />
+      </Route>
     </>
   );
 };
