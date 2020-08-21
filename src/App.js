@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { Link, Route, Redirect } from 'react-router-dom';
-import Pizza from './components/Pizza'
-import Confirmation from './components/Confirmation'
-import './App.css'
-import formSchema from './validation/formSchema'
-import * as yup from 'yup'
+import Pizza from './components/Pizza';
+import Confirmation from './components/Confirmation';
+import './App.css';
+import formSchema from './validation/formSchema';
+import * as yup from 'yup';
+import axios from 'axios';
 
 const initialFormValues = {
   name: '',
@@ -20,7 +21,7 @@ const initialErrorValues = {
   name: '',
 }
 
-const initialOrder = 'click pizza to order'
+const initialOrder = {}
 
 const App = () => {
   const [ order, setOrder ] = useState(initialOrder);
@@ -71,9 +72,22 @@ const App = () => {
       specialInstructions: formValues.specialInstructions.trim()
     }
     debugger
-    setOrder({submittedOrder})
-    console.log(order)
+    submitOrder(submittedOrder)
     window.location.href = '/confirmation'
+  }
+
+  const submitOrder = (submittedOrder) => {
+    axios.post('https://reqres.in/api/users', submittedOrder)
+      .then(res => {
+        console.log(res)
+        setOrder({...submittedOrder})
+      })
+      .catch(err => {
+        debugger
+      })
+      .finally(() => {
+        setFormValues(initialFormValues)
+      })
   }
 
   return (
